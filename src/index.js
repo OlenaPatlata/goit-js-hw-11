@@ -3,6 +3,9 @@ import { FetchImagesService } from './js/fetchImagesService';
 import { refs } from './js/getRefs';
 import { LoadMoreBtn } from './js/load-more-btn';
 import { makeImageMarkup } from './js/markupService';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+// import SimpleLightbox from "simplelightbox";
+// import "simplelightbox/dist/simple-lightbox.min.css";
 
 
 const fetchImagesService = new FetchImagesService();
@@ -26,8 +29,16 @@ function clearImageContainer() {
 function fetchImages() {
     loadMoreBtn.disable();
     fetchImagesService.fetchImages().then(data => {
+        if (data.total === 0) {
+            Notify.info(`Sorry, there are no images matching your search query: ${fetchImagesService.searchQuery}. Please try again.`);
+            loadMoreBtn.hide();
+            return;
+        }
         appendImagesMarkup(data);
         loadMoreBtn.enable();
+        const {totalHits}=data
+        Notify.success(`Hooray! We found ${totalHits} images.`)
+        // if (data.total){Notify.info('We're sorry, but you've reached the end of search results.')}
     }).catch(handleError);
 }
 

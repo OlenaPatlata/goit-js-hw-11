@@ -8,7 +8,7 @@ class FetchImagesService {
     }
 
     fetchImages() {
-        const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&page=${this.page}&per_page=40`;
+        const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&page=${this.page}&per_page=40&orientation=horizontal&image_type=photo&safesearch=true`;
         return fetch(url).then(response => {
             if (response.status === 404) {
                 return Promise.reject(new Error('Not found'));
