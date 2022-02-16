@@ -8,14 +8,22 @@ class FetchImagesService {
     }
 
     fetchImages() {
-        const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&${this.page}&per_page=40`;
-        return fetch(url).then(response => response.json()).then(data => {
+        const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&page=${this.page}&per_page=40`;
+        return fetch(url).then(response => {
+            if (response.status === 404) {
+                return Promise.reject(new Error('Not found'));
+            }
+            return response.json()
+        }).then(data => {
             this.incrementPage();
             return data;
         })
     }
     incrementPage() {
         this.page += 1;
+    }
+    resetPage() {
+        this.page = 1;
     }
 }
 

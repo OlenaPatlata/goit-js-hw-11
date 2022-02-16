@@ -12,3 +12,10 @@ body {
   line-height: 1.5;
 }
 
+button.load-more {
+  display: block;
+}
+
+button.load-more.is-hidden {
+  display: none;
+}
