@@ -35,12 +35,13 @@ function fetchImages() {
             return;
         }
         appendImagesMarkup(data);
+ lightbox.refresh();
         loadMoreBtn.enable();
         const {totalHits}=data
         Notify.success(`Hooray! We found ${totalHits} images.`)
         // if (data.total){Notify.info('We're sorry, but you've reached the end of search results.')}
     }).catch(handleError);
-    lightbox.refresh();
+    
 }
 
 function handleError() {
@@ -49,6 +50,7 @@ function handleError() {
 
 function appendImagesMarkup(data) {
     refs.containerDiv.insertAdjacentHTML('beforeend', makeImageMarkup(data));
+   
 }
 
 
