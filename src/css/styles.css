@@ -39,22 +39,46 @@ button {
 button.is-hidden {
   display: none;
 }
+
+button {
+  font-size: 16px;
+  line-height: 1.88;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  color: blue;
+  background-color: burlywood;
+  border: 1px solid transparent;
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 15%);
+  margin-left: 20px;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition-property: background-color, color, border;
+  transition-duration: 500ms;
+  transition-timing-function: linear;
+}
+
+button:hover {
+  animation: animate125 2000ms infinite 10ms;
+  background-color: rgb(179, 136, 77);
+  color: rgb(9, 9, 51);
+  border: 1px solid rgb(9, 9, 51);
+}
+
 .input-search {
   width: 50%;
   height: 40px;
-  /* border: 1px solid rgba(43, 24, 97, 0.2); */
   border-radius: 4px;
   padding: 2px 10px;
   margin-right: 20px;
-  /* outline: none; */
 }
 
-/* .gallery {
-  display: flex;
-  flex-wrap: wrap;
-} */
-
-/* Article List */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -78,20 +102,9 @@ button.is-hidden {
 .info-item:not(:last-child) {
   margin-right: 15px;
 }
-
-/* .articles li {
-  height: 450px;
-  overflow: hidden;
-} */
-
 .gallery img {
   display: block;
   width: 100%;
   height: 200px;
   object-fit: cover;
 }
-
-/* .articles a {
-  text-decoration: none;
-  color: #2a2a2a;
-} */

@@ -9,13 +9,20 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 
 const fetchImagesService = new FetchImagesService();
-const loadMoreBtn = new LoadMoreBtn({selektor: '.load-more', hidden: true});
+const loadMoreBtn = new LoadMoreBtn({ selektor: '.load-more', hidden: true });
+const lightbox = new SimpleLightbox('.gallery a', { captionDelay
+    : 250,
+});
 
 
 function onSearch(e) {
     e.preventDefault();
 
-    fetchImagesService.searchQuery = e.currentTarget.elements.searchQuery.value;
+    const currentWord = e.currentTarget.elements.searchQuery.value.trim();
+    if (currentWord === '') {
+        return Notify.info(`Enter a word to search for images.`);
+    }
+    fetchImagesService.searchQuery = currentWord;
     loadMoreBtn.show();
     fetchImagesService.resetPage();
     clearImageContainer();
@@ -27,21 +34,26 @@ function clearImageContainer() {
 }
 
 function fetchImages() {
-    loadMoreBtn.disable();
-    fetchImagesService.fetchImages().then(data => {
+    loadMoreBtn.disabled();
+    fetchImagesService.fetchImages().then(({data}) => {
         if (data.total === 0) {
             Notify.info(`Sorry, there are no images matching your search query: ${fetchImagesService.searchQuery}. Please try again.`);
             loadMoreBtn.hide();
             return;
         }
         appendImagesMarkup(data);
- lightbox.refresh();
-        loadMoreBtn.enable();
-        const {totalHits}=data
-        Notify.success(`Hooray! We found ${totalHits} images.`)
-        // if (data.total){Notify.info('We're sorry, but you've reached the end of search results.')}
+        onPageScrolling()
+        lightbox.refresh();
+        const { totalHits } = data;
+
+        if (refs.containerDiv.children.length === totalHits ) {
+            Notify.info(`We're sorry, but you've reached the end of search results.`);
+            loadMoreBtn.hide();
+        } else {
+            loadMoreBtn.enable();
+            Notify.success(`Hooray! We found ${totalHits} images.`);
+        }
     }).catch(handleError);
-    
 }
 
 function handleError() {
@@ -50,12 +62,34 @@ function handleError() {
 
 function appendImagesMarkup(data) {
     refs.containerDiv.insertAdjacentHTML('beforeend', makeImageMarkup(data));
-   
 }
 
+//  Плавная прокрутка страницы после запроса и отрисовки каждой следующей группы изображений
+function onPageScrolling(){ 
+    const { height: cardHeight } = refs.containerDiv
+        .firstElementChild.getBoundingClientRect();
+        window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+        });
+}
 
 refs.formSearch.addEventListener('submit', onSearch);
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 
-const lightbox = new SimpleLightbox('.gallery a', { captionDelay
-: 250, });
+
+
+
+
+// ======================????????????????
+
+
+
+// const { height: cardHeight } = document
+//   .querySelector(".gallery")
+//   .firstElementChild.getBoundingClientRect();
+
+// window.scrollBy({
+//   top: cardHeight * 2,
+//   behavior: "smooth",
+// });

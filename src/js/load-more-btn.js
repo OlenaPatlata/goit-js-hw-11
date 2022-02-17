@@ -12,14 +12,16 @@ class LoadMoreBtn {
         return refs;
     }
 
-    disable() {
-        this.refs.button.disable = true;
+    disabled() {
+        this.refs.button.disabled = true;
         this.refs.label.textContent = 'Loading...';
     }
+
     enable() {
-        this.refs.button.disable = false;
+        this.refs.button.disabled = false;
         this.refs.label.textContent = 'Load more';
     }
+
     show() {
         this.refs.button.classList.remove('is-hidden');
     }
@@ -28,4 +30,5 @@ class LoadMoreBtn {
         this.refs.button.classList.add('is-hidden');
     }
 }
+
 export { LoadMoreBtn };
