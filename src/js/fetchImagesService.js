@@ -1,5 +1,8 @@
+import axios from "axios";
+axios.defaults.baseURL = 'https://pixabay.com/api';
 const API_KEY = '25712416-b7f8b21cfce49117d938a95c8';
-const BASE_URL = 'https://pixabay.com/api/';
+const PARAM = 'per_page=40&orientation=horizontal&image_type=photo&safesearch=true'
+// const BASE_URL = 'https://pixabay.com/api/';
 
 class FetchImagesService {
     constructor(){
@@ -8,8 +11,8 @@ class FetchImagesService {
     }
 
     fetchImages() {
-        const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&page=${this.page}&per_page=40&orientation=horizontal&image_type=photo&safesearch=true`;
-        return fetch(url).then(response => {
+        const url = `/?key=${API_KEY}&q=${this.searchQuery}&page=${this.page}&${PARAM}`;
+        return axios.get(url).then(response => {
             if (response.status === 404) {
                 return Promise.reject(new Error('Not found'));
             }
