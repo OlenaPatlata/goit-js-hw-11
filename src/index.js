@@ -4,8 +4,8 @@ import { refs } from './js/getRefs';
 import { LoadMoreBtn } from './js/load-more-btn';
 import { makeImageMarkup } from './js/markupService';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-// import SimpleLightbox from "simplelightbox";
-// import "simplelightbox/dist/simple-lightbox.min.css";
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 
 const fetchImagesService = new FetchImagesService();
@@ -40,6 +40,7 @@ function fetchImages() {
         Notify.success(`Hooray! We found ${totalHits} images.`)
         // if (data.total){Notify.info('We're sorry, but you've reached the end of search results.')}
     }).catch(handleError);
+    lightbox.refresh();
 }
 
 function handleError() {
@@ -53,3 +54,6 @@ function appendImagesMarkup(data) {
 
 refs.formSearch.addEventListener('submit', onSearch);
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
+
+const lightbox = new SimpleLightbox('.gallery a', { captionDelay
+: 250, });
